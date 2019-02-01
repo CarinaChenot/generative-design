@@ -1,18 +1,18 @@
 // Colors
 const lineColors = {
-  1: 'rgb(255,192,0)',
-  2: '#294992',
-  3: '#A29917',
-  4: '#BE428E',
-  5: '#F09043',
-  6: '#85C18E',
-  7: '#F2A4B7',
-  8: '#CCACCF',
-  9: '#D5C900',
-  10: '#E4B228',
-  11: '#8C5E24',
-  12: '#007F49',
-  13: '#99D3DE',
+  1: 'rgba(255,192,0,1)',
+  2: 'rgba(41, 73, 146,1)',
+  3: 'rgba(162 153, 23, 1)',
+  4: 'rgba(190, 66, 142, 1)',
+  5: 'rgba(240, 144, 67, 1)',
+  6: 'rgba(133, 193, 142, 1)',
+  7: 'rgba(242,  164, 183, 1)',
+  8: 'rgba(204, 172, 207, 1)',
+  9: 'rgba(213, 201, 0, 1)',
+  10: 'rgba(228, 178, 40, 1)',
+  11: 'rgba(140, 94, 36, 1)',
+  12: 'rgba(0, 127, 73, 1)',
+  13: 'rgba(153, 211, 222, 1)',
 };
 
 const stops = {
@@ -25,36 +25,40 @@ const stops = {
 let bgColor;
 let seed;
 
-function setup() {
+function setup () {
   createCanvas(548, 235);
   bgColor = color('rgba(255,255,255,1)');
+  blendMode(MULTIPLY)
   initRandom()
 }
 
 // devrait s'appeller loop
-function draw() {
+function draw () {
   randomSeed(seed)
-  background(bgColor);
-  noFill();
-  strokeWeight(15);
-  strokeJoin(ROUND);
-  for(let i = 0; i < stops.nation.connections.length; i++)
-  {
-    let X2 = floor(random(width))
+  background(bgColor)
+  noFill()
+  strokeWeight(30)
+  strokeJoin(ROUND)
+  strokeCap(PROJECT)
+  let X2 = floor(random(width))
+  let Y2 = floor(random(height))
+  for (let i = 0; i < stops.nation.connections.length; i++) {
     let Y1 = floor(random(height))
-    let Y2 = floor(random(height))
+    let X1 = floor(random(width))
+    let X3 = floor(random(width))
     let Y3 = floor(random(height))
+    let YorX = floor(random(2))
 
-    beginShape();
     stroke(lineColors[stops.nation.connections[i]])
-    vertex(0, Y1);
+    beginShape();
+    (YorX === 0) ? vertex(-10, Y1) : vertex(X1, -10);
     vertex(X2, Y2);
-    vertex(width, Y3);
+    (YorX === 0) ? vertex(width+10, Y3) : vertex(X3, height+10);
     endShape();
   }
 }
 
-function keyTyped() {
+function keyTyped () {
   if (key === 'n') {
     initRandom();
   }
@@ -66,6 +70,6 @@ function keyTyped() {
   }
 }
 
-function initRandom() {
-  seed = random(1500)
+function initRandom () {
+  seed = random(10000)
 }
