@@ -22,73 +22,50 @@ const stops = {
   },
 };
 
-let rectColors;
 let bgColor;
-let startX;
-let startY;
-let rectWidth;
-let rectHeight;
-let rectCount;
 let seed;
 
 function setup() {
   createCanvas(548, 235);
-  bgColor = color(lineColors[1]);
-  background(bgColor);
-  rectCount = 15;
-  // initRandom();
+  bgColor = color('rgba(255,255,255,1)');
+  initRandom()
 }
 
-// function initRandom() {
-//   seed = random(1500);
-//   rectColors = [];
-//   for (let i = 0; i < rectCount; i++) {
-//     let x = floor(random(webImage.width));
-//     let y = floor(random(webImage.height));
-//     let c = webImage.get(x, y);
-//     // let r = 237;
-//     // let g = 0;
-//     // let b = floor(random(10, 255));
-//     // let c = color(r, g, b);
-//     rectColors.push(c);
-//   }
+// devrait s'appeller loop
+function draw() {
+  randomSeed(seed)
+  background(bgColor);
+  noFill();
+  strokeWeight(15);
+  strokeJoin(ROUND);
+  for(let i = 0; i < stops.nation.connections.length; i++)
+  {
+    let X2 = floor(random(width))
+    let Y1 = floor(random(height))
+    let Y2 = floor(random(height))
+    let Y3 = floor(random(height))
 
-//   startX = 75;
-//   startY = 75;
-//   rectWidth = 450 / rectCount;
-//   rectMaxHeight = 150;
-//   seed = random(1500);
-//   background(bgColor);
+    beginShape();
+    stroke(lineColors[stops.nation.connections[i]])
+    vertex(0, Y1);
+    vertex(X2, Y2);
+    vertex(width, Y3);
+    endShape();
+  }
+}
 
-//   for (let i = 0; i < rectCount; i++) {
-//     fill(rectColors[i]);
-//     let x = startX + rectWidth * i;
-//     rect(x, startY, rectWidth, rectWidth * 2); // width et height prend automatiquement la taille du canvas
-//   }
-// }
+function keyTyped() {
+  if (key === 'n') {
+    initRandom();
+  }
+  if (key === 'r') {
+    document.location.reload();
+  }
+  if (key === 's') {
+    saveCanvas(`${year()}`);
+  }
+}
 
-// // devrait s'appeller loop
-// function draw() {
-//   randomSeed(seed);
-//   // background(bgColor);
-//   // noStroke();
-//   // fill(rectColor); // on peut en mettre une 4ème pour la transparence
-//   // on peut aussi récrire :
-//   /*fill('rgb(237,0,62)');
-// fill('#ED03E');
-// */
-
-//   // principe seed random seed pour fixer le point de départ de la variable aléatoire pour avoir tjr les mêmes random
-// }
-
-// function keyTyped() {
-//   if (key === 'n') {
-//     initRandom();
-//   }
-//   if (key === 'r') {
-//     document.location.reload();
-//   }
-//   if (key === 's') {
-//     saveCanvas(`${year()}`);
-//   }
-// }
+function initRandom() {
+  seed = random(1500)
+}
