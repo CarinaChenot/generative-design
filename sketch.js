@@ -13,15 +13,39 @@ const lineColors = {
   11: 'rgba(140, 94, 36, 1)',
   12: 'rgba(0, 127, 73, 1)',
   13: 'rgba(153, 211, 222, 1)',
+  14: 'rgba(98, 33, 128, 1)',
 };
 
-const stops = {
-  nation: {
+const stop = 'C';
+
+function getCleanConnectionsArray(fields) {
+  const connectionsArray = [];
+  Object.keys(fields).filter(connection => {
+    if (connection.split('_')[0] === 'correspondance')
+      connectionsArray.push(fields[connection]);
+  });
+
+  return connectionsArray;
+}
+
+// Get data from RATP API for a specific stop
+async function getDataForStop(stop) {
+  const response = await fetch(
+    `https://data.ratp.fr/api/records/1.0/search/?dataset=trafic-annuel-entrant-par-station-du-reseau-ferre-2017&q=${stop}&rows=1&sort=trafic&facet=reseau&facet=station&facet=ville&facet=arrondissement_pour_paris&exclude.reseau=RER`
+  );
+  const data = await response.json();
+  const fields = data.records[0].fields;
+
+  return {
+    connection: getCleanConnectionsArray(fields),
+    traffic: fields.trafic,
     nbExit: 6,
-    connections: [1, 2, 6, 9],
-    traffic: 8718463,
-  },
-};
+  };
+}
+
+getDataForStop(stop).then(result => {
+  return console.log(result);
+});
 
 let rectColors;
 let bgColor;
@@ -52,11 +76,6 @@ function setup() {
   vertex(35, 20);
   vertex(95, 20);
   vertex(35, 80);
-  endShape();
-
-  beginShape();
-  vertex(95, 80);
-  vertex(95, 20);
   endShape();
 
   // initRandom();
