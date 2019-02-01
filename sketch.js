@@ -1,24 +1,25 @@
 // Colors
 const lineColors = {
-  1: 'rgb(255,192,0)',
-  2: '#294992',
-  3: '#A29917',
-  4: '#BE428E',
-  5: '#F09043',
-  6: '#85C18E',
-  7: '#F2A4B7',
-  8: '#CCACCF',
-  9: '#D5C900',
-  10: '#E4B228',
-  11: '#8C5E24',
-  12: '#007F49',
-  13: '#99D3DE',
+  1: 'rgba(255,192,0,1)',
+  2: 'rgba(41, 73, 146,1)',
+  3: 'rgba(162 153, 23, 1)',
+  4: 'rgba(190, 66, 142, 1)',
+  5: 'rgba(240, 144, 67, 1)',
+  6: 'rgba(133, 193, 142, 1)',
+  7: 'rgba(242,  164, 183, 1)',
+  8: 'rgba(204, 172, 207, 1)',
+  9: 'rgba(213, 201, 0, 1)',
+  10: 'rgba(228, 178, 40, 1)',
+  11: 'rgba(140, 94, 36, 1)',
+  12: 'rgba(0, 127, 73, 1)',
+  13: 'rgba(153, 211, 222, 1)',
 };
 
 const stops = {
   nation: {
     nbExit: 6,
     connections: [1, 2, 6, 9],
+    traffic: 8718463,
   },
 };
 
@@ -36,6 +37,28 @@ function setup() {
   bgColor = color(lineColors[1]);
   background(bgColor);
   rectCount = 15;
+
+  strokeWeight(20);
+  point(85, 75);
+  stroke(126);
+
+  strokeWeight(10);
+  stroke(80);
+
+  noFill();
+  strokeWeight(10.0);
+  strokeJoin(MITER);
+  beginShape();
+  vertex(35, 20);
+  vertex(95, 20);
+  vertex(35, 80);
+  endShape();
+
+  beginShape();
+  vertex(95, 80);
+  vertex(95, 20);
+  endShape();
+
   // initRandom();
 }
 
