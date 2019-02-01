@@ -15,8 +15,11 @@ const lineColors = {
   13: '#99D3DE',
 };
 
-const connections = {
-  nation: [1, 2, 6, 9],
+const stops = {
+  nation: {
+    nbExit: 6,
+    connections: [1, 2, 6, 9],
+  },
 };
 
 let rectColors;
