@@ -3,7 +3,7 @@ let seed;
 let vertexPoint = [];
 
 function setup() {
-  createCanvas(548, 235);
+  createCanvas(1548, 1235);
   bgColor = color('rgba(255,255,255,1)');
   background(bgColor);
   grid();
