@@ -131,15 +131,24 @@ function getRandomFromPalette() {
 }
 
 const overlay = () => {
-  textSize(26);
+  // Consts
+  let overlayOpacity = 30;
+  if(stopData.traffic > 5000000 && stopData.connection.length > 1) overlayOpacity = 150;
+  console.log(overlayOpacity);
+  
+
+  // Text
+  textSize(20);
   textFont(font); 
   textFont('ParisineOfficeStd-Bold'); 
   textStyle(BOLD); 
   textAlign(LEFT, BOTTOM);
-  fill(0)
-  blendMode(OVERLAY)
   // Stop name
+  fill(7, 1, 99)
+  blendMode(OVERLAY)
   text(stopData.name, 25, height-25);
+  blendMode(NORMAL)
+  fill(7, 1, 99, overlayOpacity)
   text(stopData.name, 25, height-25);
   
   // Number
@@ -147,15 +156,21 @@ const overlay = () => {
   textAlign(LEFT, TOP);
   textSize(40);
   rotate(90);
+  fill(7, 1, 99)
+  blendMode(OVERLAY)
   text(number, 25, 25-width);
+  blendMode(NORMAL)
+  fill(7, 1, 99, overlayOpacity)
   text(number, 25, 25-width);
   rotate(-90)
   
   //Image
   loadImage('assets/img/t-img.png', (tImg) => {
-    tint(50, 50, 50)
+    blendMode(OVERLAY)
+    tint(255, overlayOpacity)
     image(tImg, 25, 25, 56, 90);
-    tint(0, 0, 0, 80)
+    blendMode(NORMAL)
+    tint(255, overlayOpacity)
     image(tImg, 25, 25, 56, 90);
   })
   
