@@ -1,76 +1,122 @@
-let bgColor;
-let seed;
-let vertexPoint;
+let SQUARE_SIZE;
+const TICKET_WIDTH = 548;
+const TICKET_HEIGHT = 235;
+let ROWS;
+let COLUMNS;
+const CORNERS = 10;
+let PALETTE;
+let REGEX = /1\)/gm
 
-function setup () {
-  createCanvas(548, 235);
-  bgColor = color('rgba(255,255,255,1)');
-  background(bgColor)
+function setup() {
+  // reset variable values
+  PALETTE = [];
+  SQUARE_SIZE = ceil(height/stopData.connection.length)
+  ROWS = stopData.connection.length;
+  COLUMNS = ceil(width/SQUARE_SIZE)
+  console.log(COLUMNS)
+
+  // Setup canvas property
+  createCanvas(TICKET_WIDTH, TICKET_HEIGHT);
+  angleMode(DEGREES);
+  ellipseMode(CORNERS);
+  noStroke();
+  background('rgba(255,255,255)')
+
+  // create color palette from connections
+  if (stopData.connection.length > 1) {
+    for (let i = 0; i < stopData.connection.length; i++) {
+      PALETTE.push(lineColors[stopData.connection[i]])
+    }
+  } else {
+    for (let i = 0.2; i <= 1; i = i+0.2) {
+      let color = lineColors[stopData.connection[0]].replace(REGEX, i + ')')
+      PALETTE.push(color)
+    }
+  }
+
+  // draw
   grid()
-  drawGrid()
 }
 
-function drawLines () {
-  noFill()
-  strokeJoin(ROUND)
-  strokeCap(PROJECT)
-  let X2 = floor(random(width))
-  let Y2 = floor(random(height))
-  for (let i = 0; i < stopData.connection.length; i++) {
-    let weight = ceil(random(stops.nation.traffic)) + 10
-    let Y1 = floor(random(height))
-    let X1 = floor(random(width))
-    let X3 = floor(random(width))
-    let Y3 = floor(random(height))
-    let YorX = floor(random(2))
-
-    strokeWeight(weight)
-    // stroke(lineColors[stops.nation.connections[i]])
-    beginShape();
-    (YorX === 0) ? vertex(-10, Y1) : vertex(X1, -10);
-    vertex(X2, Y2);
-    (YorX === 0) ? vertex(width+10, Y3) : vertex(X3, height+10);
-    endShape();
-  }
-}
-
-function grid () {
-  let gridLength = stopData.connection.length
-  vertexPoint = []
-  for (let i = 0; i < gridLength+1; i++) {
-  console.log('enter')
-   vertexPoint[i] = []
-   for (let j = 0; j < gridLength+1; j++) {
-    vertexPoint[i][j] = { 
-      x: 0, 
-      y: 0 
+const grid = () => {
+  push();
+  for (let x = 0; x < COLUMNS; x++) {
+    push();
+    for (let y = 0; y < ROWS; y++) {
+      square();
+      quadrants();
+      translate(0, SQUARE_SIZE);
     }
-    vertexPoint[i][j].x = (width / gridLength) * i
-    vertexPoint[i][j].y = (height / gridLength) * j
-   }
+    pop();
+    translate(SQUARE_SIZE, 0);
   }
-  console.log(vertexPoint)
+  pop();
+};
+
+const square = () => {
+  const layerColor = getRandomFromPalette();
+  push();
+  fill(layerColor);
+  noStroke();
+  rect(0, 0, SQUARE_SIZE, SQUARE_SIZE);
+  pop();
+};
+
+const quadrants = () => {
+  push();
+  translate(SQUARE_SIZE / 2, SQUARE_SIZE / 2);
+
+  for (let i = 0; i < CORNERS; i++) {
+    rotate(90);
+    largeCircle();
+    mediumCircle();
+    smallCircle();
+  }
+  pop();
+};
+
+const smallCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = SQUARE_SIZE * 0.3;
+  const offset = -(SQUARE_SIZE / 2);
+
+  push();
+  fill(layerColor);
+  noStroke();
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+const mediumCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = SQUARE_SIZE * 0.75;
+  const offset = -(SQUARE_SIZE / 2);
+
+  push();
+  fill(layerColor);
+  noStroke();
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+const largeCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = SQUARE_SIZE;
+  const offset = -(SQUARE_SIZE / 2);
+
+  push();
+  fill(layerColor);
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+function randomSelectTwo() {
+  const rando = random(1);
+  if (rando > 0.5) return true;
+  return false;
 }
 
-function drawGrid () {
-  let gridLength = stopData.connection.length
-  beginShape();
-  for (let i = 0; i < gridLength+1; i++) {
-    for (let j = 0; j < gridLength+1; j++) {
-      vertex(vertexPoint[i][j].x, vertexPoint[i][j].y);
-    }
-  }
-  endShape(CLOSE);
-}
-
-function keyTyped () {
-  if (key === 'n') {
-    initRandom();
-  }
-  if (key === 'r') {
-    document.location.reload();
-  }
-  if (key === 's') {
-    saveCanvas(`${year()}`);
-  }
+function getRandomFromPalette() {
+  const rando = floor(random(0, PALETTE.length));
+  return PALETTE[rando];
 }

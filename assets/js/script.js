@@ -37,6 +37,7 @@ function update() {
   getDataForStop(stopsList[select.selectedIndex]).then(result => {
     stopData = result;
     console.log(stopData);
+    setup();
   });
 }
 
