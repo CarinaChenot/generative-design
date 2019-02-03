@@ -54,14 +54,13 @@ function grid () {
 
 function drawGrid () {
   let gridLength = stopData.connection.length
-  noFill()
   beginShape();
   for (let i = 0; i < gridLength+1; i++) {
     for (let j = 0; j < gridLength+1; j++) {
       vertex(vertexPoint[i][j].x, vertexPoint[i][j].y);
     }
   }
-  endShape();
+  endShape(CLOSE);
 }
 
 function keyTyped () {
