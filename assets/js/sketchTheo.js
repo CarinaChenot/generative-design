@@ -1,19 +1,21 @@
-let SQUARE_SIZE;
 const TICKET_WIDTH = 548;
 const TICKET_HEIGHT = 235;
-let ROWS;
-let COLUMNS;
 const CORNERS = 10;
-let PALETTE;
-let REGEX = /1\)/gm
+const REGEX = /1\)/gm
+
+let squareSize;
+let rows;
+let columns;
+let squareNumber;
+let palette;
 
 function setup() {
   // reset variable values
-  PALETTE = [];
-  SQUARE_SIZE = ceil(height/stopData.connection.length)
-  ROWS = stopData.connection.length;
-  COLUMNS = ceil(width/SQUARE_SIZE)
-  console.log(COLUMNS)
+  squareNumber = floor(stopData.traffic / 1000000);
+  palette = [];
+  squareSize = ceil(height/squareNumber);
+  rows = squareNumber;
+  columns = ceil(width/squareSize);
 
   // Setup canvas property
   createCanvas(TICKET_WIDTH, TICKET_HEIGHT);
@@ -25,12 +27,12 @@ function setup() {
   // create color palette from connections
   if (stopData.connection.length > 1) {
     for (let i = 0; i < stopData.connection.length; i++) {
-      PALETTE.push(lineColors[stopData.connection[i]])
+      palette.push(lineColors[stopData.connection[i]])
     }
   } else {
     for (let i = 0.2; i <= 1; i = i+0.2) {
       let color = lineColors[stopData.connection[0]].replace(REGEX, i + ')')
-      PALETTE.push(color)
+      palette.push(color)
     }
   }
 
@@ -40,15 +42,15 @@ function setup() {
 
 const grid = () => {
   push();
-  for (let x = 0; x < COLUMNS; x++) {
+  for (let x = 0; x < columns; x++) {
     push();
-    for (let y = 0; y < ROWS; y++) {
+    for (let y = 0; y < rows; y++) {
       square();
       quadrants();
-      translate(0, SQUARE_SIZE);
+      translate(0, squareSize);
     }
     pop();
-    translate(SQUARE_SIZE, 0);
+    translate(squareSize, 0);
   }
   pop();
 };
@@ -58,13 +60,13 @@ const square = () => {
   push();
   fill(layerColor);
   noStroke();
-  rect(0, 0, SQUARE_SIZE, SQUARE_SIZE);
+  rect(0, 0, squareSize, squareSize);
   pop();
 };
 
 const quadrants = () => {
   push();
-  translate(SQUARE_SIZE / 2, SQUARE_SIZE / 2);
+  translate(squareSize / 2, squareSize / 2);
 
   for (let i = 0; i < CORNERS; i++) {
     rotate(90);
@@ -77,8 +79,8 @@ const quadrants = () => {
 
 const smallCircle = () => {
   const layerColor = getRandomFromPalette();
-  const shapeSize = SQUARE_SIZE * 0.3;
-  const offset = -(SQUARE_SIZE / 2);
+  const shapeSize = squareSize * 0.3;
+  const offset = -(squareSize / 2);
 
   push();
   fill(layerColor);
@@ -89,8 +91,8 @@ const smallCircle = () => {
 
 const mediumCircle = () => {
   const layerColor = getRandomFromPalette();
-  const shapeSize = SQUARE_SIZE * 0.75;
-  const offset = -(SQUARE_SIZE / 2);
+  const shapeSize = squareSize * 0.75;
+  const offset = -(squareSize / 2);
 
   push();
   fill(layerColor);
@@ -101,8 +103,8 @@ const mediumCircle = () => {
 
 const largeCircle = () => {
   const layerColor = getRandomFromPalette();
-  const shapeSize = SQUARE_SIZE;
-  const offset = -(SQUARE_SIZE / 2);
+  const shapeSize = squareSize;
+  const offset = -(squareSize / 2);
 
   push();
   fill(layerColor);
@@ -117,6 +119,6 @@ function randomSelectTwo() {
 }
 
 function getRandomFromPalette() {
-  const rando = floor(random(0, PALETTE.length));
-  return PALETTE[rando];
+  const rando = floor(random(0, palette.length));
+  return palette[rando];
 }
