@@ -36,6 +36,7 @@ async function getDataForStop(stop) {
 function update() {
   getDataForStop(stopsList[select.selectedIndex]).then(result => {
     stopData = result;
+    stopData.name = stopsList[select.selectedIndex]
     setup();
   });
 }
