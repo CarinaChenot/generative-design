@@ -76,7 +76,7 @@ function apiCall() {
   const lat = 48.852351, 
     long = 2.420118;
   
-  const url = `https://maps.googleapis.com/maps/api/place/search/json?location=${lat},${long}&radius=3000&sensor=false&key=AIzaSyCpieYT0qRQCCGR4FmYlOaZQnqtH_d9zgY`
+  const url = `https://maps.googleapis.com/maps/api/place/search/json?location=${lat},${long}&radius=3000&sensor=false&key=APIKEYHERE`
 
   console.log(url);
   
