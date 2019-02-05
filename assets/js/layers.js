@@ -57,7 +57,7 @@ const largeCircle = () => {
 
 const overlay = () => {
   // Consts
-  let overlayOpacity = 1000;
+  let overlayOpacity = 255;
 
   // Text
   textSize(20);
@@ -66,11 +66,11 @@ const overlay = () => {
   textStyle(BOLD);
   textAlign(LEFT, BOTTOM);
   // Stop name
-  fill(7, 1, 99);
+  fill(00, 00, 00);
   blendMode(OVERLAY);
   text(stopData.name, 25, height - 25);
   blendMode(NORMAL);
-  fill(7, 1, 99, overlayOpacity);
+  fill(00, 00, 00, overlayOpacity);
   text(stopData.name, 25, height - 25);
 
   // Number
@@ -78,11 +78,11 @@ const overlay = () => {
   textAlign(LEFT, TOP);
   textSize(40);
   rotate(90);
-  fill(7, 1, 99);
+  fill(00, 00, 00);
   blendMode(OVERLAY);
   text(number, 25, 25 - width);
   blendMode(NORMAL);
-  fill(7, 1, 99, overlayOpacity);
+  fill(00, 00, 00, overlayOpacity);
   text(number, 25, 25 - width);
   rotate(-90);
 
