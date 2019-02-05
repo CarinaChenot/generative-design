@@ -13,9 +13,9 @@ const quadrants = () => {
 
   for (let i = 0; i < CORNERS; i++) {
     rotate(90);
-    if (randomSelectTwo()) largeCircle();
-    else mediumCircle();
-    if (randomSelectTwo()) smallCircle();
+    largeCircle();
+    mediumCircle();
+    smallCircle();
   }
   pop();
 };
