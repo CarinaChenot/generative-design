@@ -1,8 +1,4 @@
-let stopData = {
-  nbExit: 6,
-  connection: [1, 2, 6, 9],
-  traffic: 8.718463,
-};
+let stopData;
 
 const select = document.querySelector('.stop-select');
 stopsList.forEach(stop => select.append(new Option(stop, stop)));
