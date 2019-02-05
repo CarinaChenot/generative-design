@@ -17,6 +17,7 @@ const lineColors = {
   B: 'rgba(60, 145, 220, 1)',
   C: 'rgba(220, 150, 0, 1)',
   D: 'rgba(0, 150, 65, 1)',
+  E: 'rgba(220, 90, 180)',
 };
 
 const stopsList = [
