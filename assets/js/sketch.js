@@ -1,6 +1,6 @@
 const TICKET_WIDTH = 548;
 const TICKET_HEIGHT = 235;
-const CORNERS = 10;
+const CORNERS = 4;
 const REGEX = /1\)/gm;
 
 let font;
