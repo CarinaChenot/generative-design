@@ -66,10 +66,6 @@ const overlay = () => {
   textStyle(BOLD);
   textAlign(LEFT, BOTTOM);
   // Stop name
-  fill(00, 00, 00);
-  blendMode(OVERLAY);
-  text(stopData.name, 25, height - 25);
-  blendMode(NORMAL);
   fill(00, 00, 00, overlayOpacity);
   text(stopData.name, 25, height - 25);
 
@@ -78,20 +74,12 @@ const overlay = () => {
   textAlign(LEFT, TOP);
   textSize(40);
   rotate(90);
-  fill(00, 00, 00);
-  blendMode(OVERLAY);
-  text(number, 25, 25 - width);
-  blendMode(NORMAL);
   fill(00, 00, 00, overlayOpacity);
   text(number, 25, 25 - width);
   rotate(-90);
 
   //Image
   loadImage('assets/img/t-img.png', tImg => {
-    blendMode(OVERLAY);
-    tint(255, overlayOpacity);
-    image(tImg, 25, 25, 56, 90);
-    blendMode(NORMAL);
     tint(255, overlayOpacity);
     image(tImg, 25, 25, 56, 90);
   });
