@@ -16,6 +16,7 @@ const lineColors = {
 };
 
 const stopsList = [
+  'NATION',
   'GARE DU NORD',
   'OBERKAMPF',
   'DAUMESNIL',
@@ -113,7 +114,7 @@ const stopsList = [
   'CORENTIN CELTON',
   'ANATOLE FRANCE',
   'PELLEPORT',
-  'NATION',
+
   'SEVRES-BABYLONE',
   'RICHELIEU-DROUOT',
   'GRANDS BOULEVARDS',
