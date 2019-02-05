@@ -60,4 +60,10 @@ const grid = () => {
     translate(squareSize, 0);
   }
   pop();
-};
+}
+
+function keyTyped () {
+  if (key === 'r') {
+    setup()
+  }
+}
