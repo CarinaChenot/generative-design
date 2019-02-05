@@ -1,74 +1,176 @@
-let bgColor;
-let seed;
-let vertexPoint = [];
+const TICKET_WIDTH = 548;
+const TICKET_HEIGHT = 235;
+const CORNERS = 10;
+const REGEX = /1\)/gm
+
+let font
+
+let squareSize;
+let rows;
+let columns;
+let squareNumber;
+let palette;
+
 
 function setup() {
-  createCanvas(548, 235);
-  bgColor = color('rgba(255,255,255,1)');
-  background(bgColor);
-  grid();
-  drawGrid();
-}
-
-function drawLines() {
-  noFill();
-  strokeJoin(ROUND);
-  strokeCap(PROJECT);
-  let X2 = floor(random(width));
-  let Y2 = floor(random(height));
-  for (let i = 0; i < stopData.connection.length; i++) {
-    let weight = ceil(random(stopData.traffic)) + 10;
-    let Y1 = floor(random(height));
-    let X1 = floor(random(width));
-    let X3 = floor(random(width));
-    let Y3 = floor(random(height));
-    let YorX = floor(random(2));
-
-    strokeWeight(weight);
-    stroke(lineColors[stopData.connection[i]]);
-    beginShape();
-    YorX === 0 ? vertex(-10, Y1) : vertex(X1, -10);
-    vertex(X2, Y2);
-    YorX === 0 ? vertex(width + 10, Y3) : vertex(X3, height + 10);
-    endShape();
-  }
-}
-
-function grid() {
-  let gridLength = stopData.connection.length;
-  for (let i = 0; i < gridLength; i++) {
-    vertexPoint[i] = [];
-    for (let j = 0; j < gridLength; j++) {
-      vertexPoint[i][j] = {
-        x: 0,
-        y: 0,
-      };
-      vertexPoint[i][j].x = (width / (gridLength - 1)) * i;
-      vertexPoint[i][j].y = (height / (gridLength - 1)) * j;
+  // reset variable values
+  squareNumber = floor(stopData.traffic / 1000000);
+  if (squareNumber > 20) squareNumber = 20
+  palette = [];
+  squareSize = ceil(height/squareNumber);
+  rows = squareNumber;
+  columns = ceil(width/squareSize);
+  
+  // Setup canvas property
+  createCanvas(TICKET_WIDTH, TICKET_HEIGHT);
+  angleMode(DEGREES);
+  ellipseMode(CORNERS);
+  noStroke();
+  background('rgba(255,255,255)')
+  font = loadFont('assets/fonts/ParisineOfficeStd-Bold.otf');
+  
+  // create color palette from connections
+  if (stopData.connection.length > 1) {
+    for (let i = 0; i < stopData.connection.length; i++) {
+      palette.push(lineColors[stopData.connection[i]])
+    }
+  } else {
+    for (let i = 0.2; i <= 1; i = i+0.2) {
+      let color = lineColors[stopData.connection[0]].replace(REGEX, i + ')')
+      palette.push(color)
     }
   }
+
+  // draw
+  grid()
+
+  //overlay info
+  overlay()
 }
 
-function drawGrid() {
-  console.log(vertexPoint);
-  let gridLength = stopData.connection.length;
-  beginShape(POINTS);
-  for (let i = 0; i < gridLength; i++) {
-    for (let j = 0; j < gridLength; j++) {
-      vertex(vertexPoint[i][j].x, vertexPoint[i][j].y);
+const grid = () => {
+  push();
+  for (let x = 0; x < columns; x++) {
+    push();
+    for (let y = 0; y < rows; y++) {
+      square();
+      quadrants();
+      translate(0, squareSize);
     }
+    pop();
+    translate(squareSize, 0);
   }
-  endShape();
+  pop();
+};
+
+const square = () => {
+  const layerColor = getRandomFromPalette();
+  push();
+  fill(layerColor);
+  noStroke();
+  rect(0, 0, squareSize, squareSize);
+  pop();
+};
+
+const quadrants = () => {
+  push();
+  translate(squareSize / 2, squareSize / 2);
+
+  for (let i = 0; i < CORNERS; i++) {
+    rotate(90);
+    largeCircle();
+    mediumCircle();
+    smallCircle();
+  }
+  pop();
+};
+
+const smallCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = squareSize * 0.3;
+  const offset = -(squareSize / 2);
+
+  push();
+  fill(layerColor);
+  noStroke();
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+const mediumCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = squareSize * 0.75;
+  const offset = -(squareSize / 2);
+
+  push();
+  fill(layerColor);
+  noStroke();
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+const largeCircle = () => {
+  const layerColor = getRandomFromPalette();
+  const shapeSize = squareSize;
+  const offset = -(squareSize / 2);
+
+  push();
+  fill(layerColor);
+  arc(offset, offset, shapeSize, shapeSize, 0, 90);
+  pop();
+};
+
+function randomSelectTwo() {
+  const rando = random(1);
+  if (rando > 0.5) return true;
+  return false;
 }
 
-function keyTyped() {
-  if (key === 'n') {
-    initRandom();
-  }
-  if (key === 'r') {
-    document.location.reload();
-  }
-  if (key === 's') {
-    saveCanvas(`${year()}`);
-  }
+function getRandomFromPalette() {
+  const rando = floor(random(0, palette.length));
+  return palette[rando];
+}
+
+const overlay = () => {
+  // Consts
+  let overlayOpacity = 1000;
+  
+
+  // Text
+  textSize(20);
+  textFont(font); 
+  textFont('ParisineOfficeStd-Bold'); 
+  textStyle(BOLD); 
+  textAlign(LEFT, BOTTOM);
+  // Stop name
+  fill(7, 1, 99)
+  blendMode(OVERLAY)
+  text(stopData.name, 25, height-25);
+  blendMode(NORMAL)
+  fill(7, 1, 99, overlayOpacity)
+  text(stopData.name, 25, height-25);
+  
+  // Number
+  const number = Math.floor(random(99999))
+  textAlign(LEFT, TOP);
+  textSize(40);
+  rotate(90);
+  fill(7, 1, 99)
+  blendMode(OVERLAY)
+  text(number, 25, 25-width);
+  blendMode(NORMAL)
+  fill(7, 1, 99, overlayOpacity)
+  text(number, 25, 25-width);
+  rotate(-90)
+  
+  //Image
+  loadImage('assets/img/t-img.png', (tImg) => {
+    blendMode(OVERLAY)
+    tint(255, overlayOpacity)
+    image(tImg, 25, 25, 56, 90);
+    blendMode(NORMAL)
+    tint(255, overlayOpacity)
+    image(tImg, 25, 25, 56, 90);
+  })
+  
 }
