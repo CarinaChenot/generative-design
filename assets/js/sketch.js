@@ -52,7 +52,7 @@ const grid = () => {
   for (let x = 0; x < columns; x++) {
     push();
     for (let y = 0; y < rows; y++) {
-      square();
+      if (randomSelectTwo()) square();
       quadrants();
       translate(0, squareSize);
     }
