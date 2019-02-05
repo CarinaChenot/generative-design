@@ -2,6 +2,9 @@ const TICKET_WIDTH = 548;
 const TICKET_HEIGHT = 235;
 const CORNERS = 4;
 const REGEX = /1\)/gm;
+const SMALL = 0.3;
+const MEDIUM = 0.75;
+const LARGE = 1;
 
 let font;
 
@@ -62,10 +65,10 @@ const grid = () => {
     translate(squareSize, 0);
   }
   pop();
-}
+};
 
-function keyTyped () {
+function keyTyped() {
   if (key === 'r') {
-    setup()
+    setup();
   }
 }

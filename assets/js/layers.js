@@ -13,44 +13,21 @@ const quadrants = () => {
 
   for (let i = 0; i < CORNERS; i++) {
     rotate(90);
-    if (randomSelectTwo()) largeCircle();
-    else mediumCircle();
-    if (randomSelectTwo()) smallCircle();
+    if (randomSelectTwo()) circle(LARGE);
+    else circle(MEDIUM);
+    if (randomSelectTwo()) circle(SMALL);
   }
   pop();
 };
 
-const smallCircle = () => {
+const circle = ratioSize => {
   const layerColor = getRandomFromPalette();
-  const shapeSize = squareSize * 0.3;
+  const shapeSize = squareSize * ratioSize;
   const offset = -(squareSize / 2);
 
   push();
   fill(layerColor);
   noStroke();
-  arc(offset, offset, shapeSize, shapeSize, 0, 90);
-  pop();
-};
-
-const mediumCircle = () => {
-  const layerColor = getRandomFromPalette();
-  const shapeSize = squareSize * 0.75;
-  const offset = -(squareSize / 2);
-
-  push();
-  fill(layerColor);
-  noStroke();
-  arc(offset, offset, shapeSize, shapeSize, 0, 90);
-  pop();
-};
-
-const largeCircle = () => {
-  const layerColor = getRandomFromPalette();
-  const shapeSize = squareSize;
-  const offset = -(squareSize / 2);
-
-  push();
-  fill(layerColor);
   arc(offset, offset, shapeSize, shapeSize, 0, 90);
   pop();
 };
